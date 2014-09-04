@@ -8,44 +8,28 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
+import android.widget.ListView;
 import android.widget.TextView;
 
 public class MainActivity extends Activity {
 
-	private TextView responseTextView;
+	private ListView getAllCustomerListView;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState); 
         setContentView(R.layout.activity_main);
         
-        this.responseTextView = (TextView) this.findViewById(R.id.responseTextView); 
+        this.getAllCustomerListView = (ListView) this.findViewById(R.id.getAllCustomerListView);
+        
         new GetAllFromDbTask().execute(new ApiConnector());
         
     } 
 
-    public void setTextToTextView(JSONArray jsonArray)
+   
+    public void setListAdapter(JSONArray jsonArray)
     {
-    	String s = "";
-    	for (int i=0; i<jsonArray.length();i++)
-    	{
-    		
-    		JSONObject json = null;
-    		try
-    		{
-    			json = jsonArray.getJSONObject(i);
-    			s = s + 
-    					"First Name : " + json.getString("first")+" " + "\n"+
-    					"Last Name : " + json.getString("last") + "\n\n" ;
-    		
-    		} catch (JSONException e )
-    		{
-    			e.printStackTrace();
-    		}
-    	}
-    	
-    	this.responseTextView.setText(s);
-    	
+    	this.getAllCustomerListView.setAdapter(new GetAllCustomerListViewAdapter(jsonArray, this));
     }
     
     // GetAllCustomerTask
@@ -70,8 +54,7 @@ public class MainActivity extends Activity {
 		protected void onPostExecute(JSONArray jsonArray) {
 			
 			// Executed on MainThread
-			
-			setTextToTextView(jsonArray);
+			setListAdapter(jsonArray);
 			
 		}
     	
