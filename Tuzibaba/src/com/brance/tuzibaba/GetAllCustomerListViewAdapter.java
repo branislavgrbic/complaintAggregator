@@ -1,11 +1,18 @@
 package com.brance.tuzibaba;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.provider.Telephony.Sms.Conversations;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +27,7 @@ public class GetAllCustomerListViewAdapter extends BaseAdapter {
 	private JSONArray dataArray;
 	private Activity activity;
 	private static LayoutInflater inflater = null;
-	
+	private static final String baseUrlForImage = "http://192.168.1.2/images/";
 	
 	public GetAllCustomerListViewAdapter(JSONArray jsonArray,Activity a)
 	{
@@ -53,7 +60,7 @@ public class GetAllCustomerListViewAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		
 		// set up convert view, if it is null 
-		ListCell cell;
+		final ListCell cell;
 		if (convertView == null)
 		{
 			convertView = inflater.inflate(R.layout.get_all_customer_cell, null);
@@ -77,8 +84,59 @@ public class GetAllCustomerListViewAdapter extends BaseAdapter {
 			cell.firstName.setText(jsonObject.getString("first"));
 			cell.lastName.setText(jsonObject.getString("last"));
 			
-			cell.image.setImageResource(R.drawable.ic_launcher);
-			//add here code for image location
+			
+			
+			
+			// For Scenario 1 (in userdatabase we have name of the image
+			
+			// url for image folder
+			
+	
+			// name of image that we are downloading
+			String nameOfImage = jsonObject.getString("imageName");
+
+			// full url of image
+			String urlForImageInServer = baseUrlForImage + nameOfImage;
+			
+			// new async task
+			
+			new AsyncTask<String, Void, Bitmap>()
+			{
+
+				@Override
+				protected Bitmap doInBackground(String... params) {
+					
+					//download image
+					String url = params[0];
+					Bitmap icon = null;
+					
+					try 
+					{
+						InputStream in = new java.net.URL(url).openStream();
+						icon = BitmapFactory.decodeStream(in);
+						
+					} catch (MalformedURLException e) 
+					{
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e) 
+					{
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} 
+					return icon;
+				}
+				
+				
+				protected void onPostExecute(Bitmap result)
+				{
+					// assign that image to ImageView of list view cell
+					cell.image.setImageBitmap(result);
+				}
+				
+			}.execute(urlForImageInServer);
+			
+			
 			
 			
 		} catch (JSONException e) 
