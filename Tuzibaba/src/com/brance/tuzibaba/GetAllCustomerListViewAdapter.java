@@ -14,6 +14,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.provider.Telephony.Sms.Conversations;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +29,7 @@ public class GetAllCustomerListViewAdapter extends BaseAdapter {
 	private Activity activity;
 	private static LayoutInflater inflater = null;
 	private static final String baseUrlForImage = "http://192.168.1.2/images/";
-	
+	private static final String server = "http://192.168.1.2/";
 	public GetAllCustomerListViewAdapter(JSONArray jsonArray,Activity a)
 	{
 		this.activity = a;
@@ -98,8 +99,21 @@ public class GetAllCustomerListViewAdapter extends BaseAdapter {
 			// full url of image
 			String urlForImageInServer = baseUrlForImage + nameOfImage;
 			
-			// new async task
 			
+			/* 
+			*  
+			*	Scenario 2 (using BLOB in database)
+			*		
+			*
+			*/
+			
+			String idOfUser = jsonObject.getString("ID");
+			
+			// full url of image
+			String urlForImageInDatabase = server + "getImage.php?ID=" + idOfUser;
+			Log.i("URL FOR IMAGE " , urlForImageInDatabase);
+			
+			// new async task
 			new AsyncTask<String, Void, Bitmap>()
 			{
 
@@ -114,6 +128,7 @@ public class GetAllCustomerListViewAdapter extends BaseAdapter {
 					{
 						InputStream in = new java.net.URL(url).openStream();
 						icon = BitmapFactory.decodeStream(in);
+					
 						
 					} catch (MalformedURLException e) 
 					{
@@ -132,22 +147,25 @@ public class GetAllCustomerListViewAdapter extends BaseAdapter {
 				{
 					// assign that image to ImageView of list view cell
 					cell.image.setImageBitmap(result);
+					
 				}
 				
-			}.execute(urlForImageInServer);
-			
-			
-			
+			}
+			// Scenario 1
+			//.execute(urlForImageInServer);
+			// Scenario 2
+			.execute(urlForImageInDatabase);
 			
 		} catch (JSONException e) 
 		{
 			
 			e.printStackTrace();
 		}
-		
-		
-		
 		return convertView;
+		
+	
+	
+
 	}
 	
 	private class ListCell

@@ -28,6 +28,14 @@
             android:name="com.brance.tuzibaba.CustomerDetailsActivity"
             android:label="@string/title_activity_customer_details" >
         </activity>
+        <activity
+            android:name="com.brance.tuzibaba.ListViewActivity"
+            android:label="@string/title_activity_list_view" >
+        </activity>
+        <activity
+            android:name="com.brance.tuzibaba.PostComplaintActivity"
+            android:label="@string/title_activity_post_complaint" >
+        </activity>
     </application>
 
 </manifest>
