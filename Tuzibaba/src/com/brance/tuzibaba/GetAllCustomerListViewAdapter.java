@@ -152,9 +152,9 @@ public class GetAllCustomerListViewAdapter extends BaseAdapter {
 				
 			}
 			// Scenario 1
-			//.execute(urlForImageInServer);
+			.execute(urlForImageInServer);
 			// Scenario 2
-			.execute(urlForImageInDatabase);
+			//.execute(urlForImageInDatabase);
 			
 		} catch (JSONException e) 
 		{

@@ -36,6 +36,10 @@
             android:name="com.brance.tuzibaba.PostComplaintActivity"
             android:label="@string/title_activity_post_complaint" >
         </activity>
+        <activity
+            android:name="com.brance.tuzibaba.UploadImage"
+            android:label="		title_upload_activity" >
+        </activity>
     </application>
 
 </manifest>

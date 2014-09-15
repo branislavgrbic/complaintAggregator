@@ -17,10 +17,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.util.Log;
+import android.widget.Toast;
 
 public class ApiConnector {
 	
 	private static final String server = "http://192.168.1.2/";
+	InputStream inputStream;
 	// get all from customers
 	public JSONArray GetAllFromDB() {
 		// URL for getting db info
@@ -190,7 +192,13 @@ public class ApiConnector {
 		}
 	
 	
-	public void AddToDB(String temp_name, String temp_surname, int temp_age) {
+	
+	/* ************************************************************************************************
+	 * This callse insertInto.php which inserts User Name, Last Name, Age into database 
+	 *   and returns the given id for this user
+	 * Id is then used for image storing.
+	 ************************************************************************************************* */
+	public HttpResponse AddToDB(String temp_name, String temp_surname, int temp_age) {
 		// URL for getting db info
 
 		// String url = server + "getCustomerDetails.php?CustomerID="+CustomerID;
@@ -202,14 +210,16 @@ public class ApiConnector {
 
 		HttpEntity httpEntity = null;
 		InputStream is = null;
-        String result = "";
+        String result = ""; 
+        HttpResponse httpResponse = null;
 		try {
 			
 			DefaultHttpClient httpClient = new DefaultHttpClient(); //Default HttpClient
 			HttpGet httpGet = new HttpGet(url);
 			//HttpPost httpGet = new HttpPost(url);
-			HttpResponse httpResponse = httpClient.execute(httpGet);
-		
+			httpResponse = httpClient.execute(httpGet);
+			
+			
 			/*	 
 			 * NOT REQIRED BECAUSE WE DONT NEED REPLY FROM PHP SCRIPT
 			 * BUT LATER WE COULD INSERT ACQNOWLEDGMENT OF RECIEVED DB UPDATE
@@ -278,8 +288,60 @@ public class ApiConnector {
 		}
 		*/	
 		
-
+		return (httpResponse);
 	}
 	
+	/* ******************************************************************************
+	 * 
+	 * This method is used when uploading new report. First user sends all the information,
+	 * and when he gets his Unique ID then we can update the information about image path
+	 * 
+	 ********************************************************************************/
+	public void UpdateImagePath(String CustomerID, String filePath) {
+		// URL for getting db info
+
+		// String url = server + "getCustomerDetails.php?CustomerID="+CustomerID;
+		String url = server + "updateImagePath.php?CustomerID=" + CustomerID + "&filePath=" + filePath ;
+		// String url = "example.com","username","password","my_db";
+		// String url = "http://10.0.2.2:8080/getAllCustomers.php";
+		// get HttpResponse Object from url
+		// Get HttpEntity from Http Response Object
+
+		HttpEntity httpEntity = null;
+		InputStream is = null;
+        String result = ""; 
+        HttpResponse httpResponse = null;
+		try {
+			
+			DefaultHttpClient httpClient = new DefaultHttpClient(); //Default HttpClient
+			HttpGet httpGet = new HttpGet(url);
+			//HttpPost httpGet = new HttpPost(url);
+			httpResponse = httpClient.execute(httpGet);
+			
+			
+			/*	 
+			 * NOT REQIRED BECAUSE WE DONT NEED REPLY FROM PHP SCRIPT
+			 * BUT LATER WE COULD INSERT ACQNOWLEDGMENT OF RECIEVED DB UPDATE
+			
+			httpEntity = httpResponse.getEntity();
+			is = httpEntity.getContent();
+			
+			*
+			*/
+		} catch (ClientProtocolException e) {
+
+			// Signals error in http protocol
+			e.printStackTrace();
+			System.err.println("error in http protocol");
+			// Log Errors Here
+
+		} catch (IOException e) {
+			System.err.println("error IOException e");
+			// TODO: handle exception
+			e.printStackTrace();
+			
+		}
+	
+	}
 	
 }

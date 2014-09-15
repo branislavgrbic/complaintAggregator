@@ -40,4 +40,10 @@ public class MainActivity extends Activity {
 		startActivity(showDetails);
     }
     
+    public void testActivity(View view)
+    {
+    	Intent showDetails = new Intent(getApplicationContext(), UploadImage.class);	
+		startActivity(showDetails);
+    }
+    
 }
