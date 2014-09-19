@@ -2,37 +2,51 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+   
     tools:context=".MainActivity" >
 
-
-
-    <Button
-        android:id="@+id/button1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:onClick="ListViewActivity"
-        android:text="List Of Complaints" />
-     <Button
-        android:id="@+id/button2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/button1"
-        android:onClick="PostComplaint"
-        android:text="PostComplaint" />
-     
-     <Button
-        android:id="@+id/button3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/button2"
-        android:onClick="testActivity"
-        android:text="TestActivity" />
-    
+	<ImageView 
+	       
+	        android:id="@+id/imageView1"
+	        android:layout_width="fill_parent"
+	        android:layout_height="167dp"
+	        android:layout_alignParentLeft="true"
+	        android:layout_alignParentTop="true"
+	        android:background="#EEF2E0"
+	        android:scaleType="fitXY"
+	        android:src="@drawable/xhdpi_zaglavlje" 
+	    />
+	<LinearLayout 
+	    android:layout_height="wrap_content"
+	    android:layout_width="fill_parent"
+	    android:orientation="vertical"
+	    android:layout_centerHorizontal="true"
+	    android:layout_centerVertical="true"
+	    android:layout_centerInParent="true"
+	    >
+	    <ImageButton
+	        android:id="@+id/pregled"     
+	        android:layout_gravity="center"   
+	        android:layout_width="260dp"
+	        android:layout_height="55dp"
+	        android:layout_marginTop="10dp"
+	        android:layout_marginBottom="20dp"
+	        android:scaleType="fitCenter"
+	        android:background="#00000000"
+	        android:onClick="ListViewActivity"
+	        android:src="@drawable/pregled_selector"
+	         />
+	     <ImageButton
+	        android:id="@+id/postavi"
+	        android:layout_width="260dp"
+	        android:layout_height="55dp"
+	        android:layout_gravity="center"   
+	        android:layout_marginBottom="20dp"
+	        android:scaleType="fitCenter"        
+	        android:background="#00000000"
+	        android:onClick="PostComplaint"
+	        android:src="@drawable/postavi_selector" />
+	     
+	     
+    </LinearLayout>
 </RelativeLayout>

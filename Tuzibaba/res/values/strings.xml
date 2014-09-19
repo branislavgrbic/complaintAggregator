@@ -8,4 +8,18 @@
     <string name="title_activity_list_view">ListViewActivity</string>
     <string name="title_activity_post_complaint">PostComplaintActivity</string>
 
+    <string-array name="category">
+        <item>...</item>
+        <item>Rupa na putu</item>
+        <item>Smeće</item>
+        <item>Grafiti</item>
+        <item>Ulična rasveta</item>
+        <item>Uginule životinje</item>
+        <item>Nepropisno parkiranje</item>
+        <item>Zapušeni slivnici</item>
+        <item>Ostalo</item>
+    </string-array>
+
+    <string name="title_activity_splash">Splash</string>
+
 </resources>

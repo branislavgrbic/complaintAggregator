@@ -3,38 +3,59 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal" 
+    android:layout_marginTop="5dp"
     android:gravity="center_vertical|center_horizontal"
     >
-    
     <LinearLayout
-        android:orientation="vertical"
-        android:layout_width= "wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="3">
+        android:id="@+id/outterLayout"
         
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="First: "
-            android:id="@+id/customer_name"
-            ></TextView>
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="Second: "
-            android:id="@+id/customer_surname"
-            android:layout_weight="1"
-            ></TextView>
+        >
         
-       
-    </LinearLayout>
-     <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:id="@+id/customer_mobile"
-            android:layout_weight="1"
-            android:src="@drawable/ic_launcher"
-         	></ImageView>
-
+    	<LinearLayout
+    	    android:layout_width="fill_parent"
+    	    android:layout_height="wrap_content"
+    	    android:layout_marginLeft="3dp"
+			android:layout_marginTop="3dp"
+			android:layout_marginBottom="3dp"
+			android:layout_marginRight="3dp"
+			android:background="#ffffffff"
+    	    >
+		    <LinearLayout
+		        android:orientation="vertical"
+		        android:layout_width= "wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_marginLeft="5dp"
+		        android:layout_weight="3">
+		        
+		        <TextView
+		            android:layout_width="fill_parent"
+		            android:layout_height="wrap_content"
+		            android:text="First: "
+		            android:id="@+id/category"
+		            ></TextView>
+		        <TextView
+		            android:layout_width="fill_parent"
+		            android:layout_height="wrap_content"
+		            android:text="Second: "
+		            android:id="@+id/description"
+		            android:layout_weight="1"
+		            ></TextView>
+		        
+		       
+		    </LinearLayout>
+		    
+		     <ImageView
+		         android:id="@+id/customer_mobile"
+		         android:layout_width="50dp"
+		         android:layout_height="50dp"
+		         
+		         
+		         >
+			</ImageView>
+		     
+		 </LinearLayout> 
+	</LinearLayout>
     	
 </LinearLayout>

@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -11,6 +13,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -21,7 +24,8 @@ import android.widget.Toast;
 
 public class ApiConnector {
 	
-	private static final String server = "http://192.168.1.2/";
+	//private static final String server = "http://192.168.1.102/";
+	private static final String server = "http://178.148.115.115/";
 	InputStream inputStream;
 	// get all from customers
 	public JSONArray GetAllFromDB() {
@@ -135,12 +139,14 @@ public class ApiConnector {
 					// Signals error in http protocol
 					e.printStackTrace();
 					System.err.println("error in http protocol");
+					return null;
 					// Log Errors Here
 
 				} catch (IOException e) {
 					System.err.println("error IOException e");
 					// TODO: handle exception
 					e.printStackTrace();
+					return null;
 					
 				}
 				// Convert response to string
@@ -156,6 +162,7 @@ public class ApiConnector {
 		            result = sb.toString();
 		        } catch (Exception e) {
 		            Log.e("log_tag", "Error converting result " + e.toString());
+		            return null;
 		        }
 
 			
@@ -180,10 +187,12 @@ public class ApiConnector {
 					{
 						System.err.println("error JSONException1");
 						e.printStackTrace();
+						return null;
 					} catch (Exception e)
 					{
 						System.err.println("error globas");
 						e.printStackTrace();
+						return null;
 						
 					}
 				}
@@ -198,11 +207,20 @@ public class ApiConnector {
 	 *   and returns the given id for this user
 	 * Id is then used for image storing.
 	 ************************************************************************************************* */
-	public HttpResponse AddToDB(String temp_name, String temp_surname, int temp_age) {
+	public HttpResponse AddToDB(String temp_name, String temp_description, double temp_latitude, double temp_longitude) {
 		// URL for getting db info
 
+		String query = null;
+		try {
+			temp_name = URLEncoder.encode(temp_name   , HTTP.UTF_8);
+			temp_description = URLEncoder.encode(temp_description   , HTTP.UTF_8);
+			
+		} catch (UnsupportedEncodingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		// String url = server + "getCustomerDetails.php?CustomerID="+CustomerID;
-		String url = server + "insertInto.php?name=" + temp_name + "&surname="+ temp_surname + "&age=" + temp_age;
+		String url = server + "insertInto.php?name=" +temp_name + "&surname="+ temp_description + "&latitude=" + temp_latitude  +"&longitude=" + temp_longitude  ;
 		// String url = "example.com","username","password","my_db";
 		// String url = "http://10.0.2.2:8080/getAllCustomers.php";
 		// get HttpResponse Object from url
