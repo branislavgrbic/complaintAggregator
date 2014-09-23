@@ -25,7 +25,7 @@ import android.widget.Toast;
 public class ApiConnector {
 	
 	//private static final String server = "http://192.168.1.102/";
-	private static final String server = "http://178.148.115.115/";
+	private static final String server = "http://178.148.116.182/";
 	InputStream inputStream;
 	// get all from customers
 	public JSONArray GetAllFromDB() {

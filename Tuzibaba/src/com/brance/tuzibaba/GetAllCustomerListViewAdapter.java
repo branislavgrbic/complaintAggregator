@@ -2,7 +2,6 @@ package com.brance.tuzibaba;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.ref.WeakReference;
 import java.net.MalformedURLException;
 
 import org.json.JSONArray;
@@ -12,11 +11,9 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,16 +29,20 @@ public class GetAllCustomerListViewAdapter extends BaseAdapter {
 	private Activity activity;
 	private static LayoutInflater inflater = null;
 	//private static final String baseUrlForImage = "http://192.168.1.102/images/";
-	private static final String baseUrlForImage = "http://178.148.115.115/images/";
+	private static final String baseUrlForImage = "http://178.148.116.182/images/";
 	//private static final String server = "http://192.168.1.102/";
-	private static final String server = "http://178.148.115.115/";
+	private static final String server = "http://178.148.116.182/";
 	public String imageNameTmp;
 	String[] categoryArray;
-	public GetAllCustomerListViewAdapter(JSONArray jsonArray,Activity a, String[] tmp)
+	int imageID;
+
+	
+	
+	public GetAllCustomerListViewAdapter(JSONArray jsonArray,Activity a, String[] tmp, int arg_imageID)
 	{
 		this.activity = a;
 		this.dataArray = jsonArray;
-		
+		imageID = arg_imageID;
 		inflater = (LayoutInflater) this.activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		categoryArray = tmp;
 	}
@@ -65,11 +66,11 @@ public class GetAllCustomerListViewAdapter extends BaseAdapter {
 	}
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView(int position,  View convertView, ViewGroup parent) {
 		
 		// set up convert view, if it is null 
 		coun ++;
-		System.out.println("Getview" + coun);
+		//System.out.println("Getview" + coun);
 		
 		final ListCell cell;
 		if (convertView == null)
@@ -81,7 +82,7 @@ public class GetAllCustomerListViewAdapter extends BaseAdapter {
 			cell.description = (TextView) convertView.findViewById(R.id.description);
 			cell.image = (ImageView) convertView.findViewById(R.id.customer_mobile);
 			cell.outter = (LinearLayout) convertView.findViewById(R.id.outterLayout);
-			
+			cell.image.setTag(position);
 			convertView.setTag(cell);
 		}
 		else
@@ -97,7 +98,11 @@ public class GetAllCustomerListViewAdapter extends BaseAdapter {
 			cell.category.setText(categoryArray[Integer.parseInt(jsonObject.getString("first"))]);
 			cell.description.setText(jsonObject.getString("last"));
 			cell.status = jsonObject.getInt("status");
-			System.out.println(position + " " + jsonObject.getString("first") +" "+ jsonObject.getString("last") + " status:" + jsonObject.getInt("status"));
+			cell.myPosition = position;
+			// System.out.println(position + " " + jsonObject.getString("first") +" "+ jsonObject.getString("last") + " status:" + jsonObject.getInt("status"));
+			// Temp Image is no image
+			
+			cell.image.setImageResource(imageID);
 			
 			// Surround with different color depending on status
 			switch (cell.status)
@@ -160,7 +165,8 @@ public class GetAllCustomerListViewAdapter extends BaseAdapter {
 				{
 					// assign that image to ImageView of list view cell
 					
-					if(result != null){										
+					if(result != null) 
+					{
 						cell.image.setImageBitmap(resizeBitmap2(result));								
 				    }				
 					
@@ -194,6 +200,9 @@ public class GetAllCustomerListViewAdapter extends BaseAdapter {
 		private int status;
 		private double latitude;
 		private double longitude;
+		int myPosition;
+		AsyncTask task;
+		
 		
 	}
 	
