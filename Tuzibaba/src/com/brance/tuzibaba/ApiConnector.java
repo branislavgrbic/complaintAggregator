@@ -5,27 +5,30 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.InetAddress;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
 import java.net.URLEncoder;
+import java.net.UnknownHostException;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.HTTP;
-import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import android.util.Log;
-import android.widget.Toast;
 
 public class ApiConnector {
 	
 	//private static final String server = "http://192.168.1.102/";
 	private static final String server = "http://178.148.116.182/";
+	private static final String serverCheck = "http://178.148.116.182";
 	InputStream inputStream;
 	// get all from customers
 	public JSONArray GetAllFromDB() {
@@ -361,5 +364,11 @@ public class ApiConnector {
 		}
 	
 	}
+	
+	public int CheckServer()
+	{
+		return 1;
+	}
+	
 	
 }

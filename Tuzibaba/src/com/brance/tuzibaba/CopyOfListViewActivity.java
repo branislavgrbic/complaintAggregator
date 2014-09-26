@@ -454,7 +454,7 @@ public class CopyOfListViewActivity extends Activity {
     public void setListAdapter(JSONArray jsonArray,String[] tmp)
     {
     	this.jsonArray = jsonArray;
-    	this.getAllCustomerListView.setAdapter(new GetAllCustomerListViewAdapter(jsonArray, this,tmp,getResources().getIdentifier("noimagetumb", "drawable", getPackageName()) ));
+    	//this.getAllCustomerListView.setAdapter(new GetAllCustomerListViewAdapter(jsonArray, this,tmp,getResources().getIdentifier("noimagetumb", "drawable", getPackageName()) ));
     }
     
     // GetAllCustomerTask

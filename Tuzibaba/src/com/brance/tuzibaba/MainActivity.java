@@ -32,7 +32,7 @@ public class MainActivity extends Activity {
         
         cache = new DiskLruImageCache(getApplicationContext(), "myCache", 10, CompressFormat.PNG, 100);
         
-        this.button = (Button) this.findViewById(R.id.button1);
+      //  this.button = (Button) this.findViewById(R.id.button1);
     }
     
     public void ListViewActivity(View view)

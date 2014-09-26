@@ -7,6 +7,7 @@
     <item android:state_focused="true"
           android:drawable="@drawable/posalji2_pressed"
           />
+	<item android:state_enabled="false" android:drawable="@drawable/posalji2_pressed" /> 
     <item android:drawable="@drawable/posalji2"
           />
 </selector>

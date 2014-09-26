@@ -28,30 +28,103 @@
 		        android:layout_height="wrap_content"
 		        android:layout_marginLeft="5dp"
 		        android:layout_weight="3">
+		        <LinearLayout 
+				    android:layout_width="fill_parent"
+				    android:layout_height="wrap_content"
+				    android:padding="5dp"
+				    android:layout_marginTop="5dp"
+				    android:orientation="horizontal"
+				    android:background="#ffffffff"
+				    >
+				        <TextView
+				            android:id="@+id/textState"
+				            android:layout_width="wrap_content"
+				            android:layout_height="wrap_content"
+				            android:text="Status :"
+				            android:layout_marginRight="5dp"
+				            android:layout_column = "0"
+				            android:layout_weight="0"
+				            android:textStyle="bold"
+				        ></TextView>
+
+				        <ImageView
+				            android:layout_width="10dp"
+				            android:layout_height="10dp"
+				            android:layout_marginRight="5dp"
+				            android:layout_column="1"
+				            android:id="@+id/statusImage"
+				            android:layout_weight="0"
+				            android:baselineAlignBottom="true"
+				            android:src="@drawable/red" >
+							</ImageView>
+				         <TextView
+				            android:layout_width="wrap_content"
+				            android:layout_height="wrap_content"
+				            android:text="U obradi"
+				            android:id="@+id/statusTextChange"
+				            android:layout_column = "2"
+				            android:layout_weight="0"
+				        ></TextView>
+				  </LinearLayout>       
+				    
+				   <LinearLayout    
+				        android:layout_width="fill_parent"
+				        android:layout_height="wrap_content"
+				        android:padding="5dp"
+				        android:orientation="horizontal"
+				        >
+				       <TextView
+				            android:layout_width="wrap_content"
+				            android:layout_height="wrap_content"
+				            android:layout_marginRight="5dp"
+				            android:text="Kategorija: "	    
+				            android:textStyle="bold"      
+				            android:id="@+id/textCategory"
+			            ></TextView>
+	    				  <TextView
+				            android:layout_width="wrap_content"
+				            android:layout_height="wrap_content"
+				            android:layout_weight="0"
+				            android:text="test"
+				            android:id="@+id/category"
+			            ></TextView>
+
+				         
+				    </LinearLayout>
+		
+		        	<LinearLayout    
+				        android:layout_width="fill_parent"
+				        android:layout_height="wrap_content"
+				        android:orientation="horizontal"
+				        android:padding="5dp"
+				        >
+				       <TextView
+				            android:layout_width="wrap_content"
+				            android:layout_height="wrap_content"
+				            android:layout_marginRight="5dp"
+				            android:text="Datum: "	    
+				            android:textStyle="bold"      
+				            android:id="@+id/textCategory"
+			            ></TextView>
+	    				  <TextView
+				            android:layout_width="wrap_content"
+				            android:layout_height="wrap_content"
+				            android:layout_weight="0"
+				            android:text="test"
+				            android:id="@+id/datum"
+			            ></TextView>
+
+				         
+				    </LinearLayout>
 		        
-		        <TextView
-		            android:layout_width="fill_parent"
-		            android:layout_height="wrap_content"
-		            android:text="First: "
-		            android:id="@+id/category"
-		            ></TextView>
-		        <TextView
-		            android:layout_width="fill_parent"
-		            android:layout_height="wrap_content"
-		            android:text="Second: "
-		            android:id="@+id/description"
-		            android:layout_weight="1"
-		            ></TextView>
-		        
-		       
 		    </LinearLayout>
 		    
 		     <ImageView
 		         android:id="@+id/customer_mobile"
-		         android:layout_width="50dp"
-		         android:layout_height="50dp"
+		         android:layout_width="55dp"
+		         android:layout_height="55dp"
 		         android:scaleType="fitXY"
-		         
+		   
 		         >
 			</ImageView>
 		     

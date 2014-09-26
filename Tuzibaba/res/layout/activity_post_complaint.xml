@@ -197,14 +197,16 @@
 		    android:background="#ffffffff"
 		    android:layout_marginTop="10dp"
 		    android:orientation="vertical"
+		    
 		    >
 
 	   <ImageButton
-	       android:id="@+id/button1"
+	       android:id="@+id/buttonSend"
 	       android:layout_width="fill_parent"
 	       android:layout_height="45dp"
 	       android:layout_margin="5dp"
 	       android:layout_marginTop="10dp"
+	       
 	       android:background="#00000000"
 	       android:onClick="AddIntoList"
 	       android:scaleType="fitCenter"

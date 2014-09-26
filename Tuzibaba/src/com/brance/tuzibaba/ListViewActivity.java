@@ -1,40 +1,39 @@
 package com.brance.tuzibaba;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.InetAddress;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.UnknownHostException;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
-
-
-
-
-
-
-
-
-
-
-import android.opengl.Visibility;
+import android.R.bool;
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.app.Activity;
-import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.view.Menu;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 public class ListViewActivity extends Activity {
 
+	private static final String server = "http://178.148.116.182/";
 	ListView getAllCustomerListView;
 	private JSONArray jsonArray;
 	private ImageButton button;
@@ -45,7 +44,7 @@ public class ListViewActivity extends Activity {
 	ImageButton splashImage;
 	ImageView unavailable;
 	RelativeLayout.LayoutParams lp;
-	
+	int[] imageID;
 	boolean startedAlready = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +62,7 @@ public class ListViewActivity extends Activity {
 		splashImage.getLayoutParams().height = height;
 		splashImage.getLayoutParams().width = width;
 		splashImage.setImageResource(R.drawable.splash);
-		
+		imageID = new int[10];
 		// If application is started from scratch show splash screen, if its resumed or 
 		// screen is rotated, do nothing
 		if (!startedAlready)
@@ -71,6 +70,7 @@ public class ListViewActivity extends Activity {
 			System.out.println("started alreadu :" + startedAlready);
 			splashImage.setVisibility(View.VISIBLE);
 			startedAlready = true;
+			
 			Handler handler = new Handler();
 			handler.postDelayed(new Runnable() {
 			        @Override
@@ -80,6 +80,29 @@ public class ListViewActivity extends Activity {
 			        	button.setVisibility(View.VISIBLE);
 			        	System.out.println("HANDLER DONE");
 			           // finish();
+			        	/*
+			        	boolean reachable = false;
+						try {
+							reachable = InetAddress.getByName("http://178.148.116.182").isReachable(4000);
+						} catch (UnknownHostException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						if (reachable) 
+						{
+							System.out.println("REACHABLE");
+							new GetAllFromDbTask().execute(new ApiConnector());
+							
+						} 
+						else
+						{
+							System.out.println("UnREACHABLE");
+							unavailable.setVisibility(View.VISIBLE);
+						}
+						*/
 			        	if (errorLoading)
 			        	{
 			        		System.out.println("No data from database");
@@ -92,7 +115,11 @@ public class ListViewActivity extends Activity {
 			        	}
 			            
 			        }
-			    }, 3000);  
+			        
+			        
+			    }, 3000);
+			
+			
 		}
 		else
 		{
@@ -102,6 +129,8 @@ public class ListViewActivity extends Activity {
 		}
 		try
 		{
+			//new CheckServer().execute(new ApiConnector());
+			unavailable.setVisibility(View.VISIBLE);
 			new GetAllFromDbTask().execute(new ApiConnector());
 		}
 		catch (Exception e)
@@ -141,7 +170,17 @@ public class ListViewActivity extends Activity {
     public void setListAdapter(JSONArray jsonArray,String[] tmp)
     {
     	this.jsonArray = jsonArray;
-    	this.getAllCustomerListView.setAdapter(new GetAllCustomerListViewAdapter(jsonArray, this,tmp, getResources().getIdentifier("noimagetumb", "drawable", getPackageName()) ));
+    	imageID[0] = getResources().getIdentifier("ostalo", "drawable", getPackageName());
+    	imageID[1] = getResources().getIdentifier("rupa2", "drawable", getPackageName());
+    	imageID[2] = getResources().getIdentifier("smece2", "drawable", getPackageName());
+    	imageID[3] = getResources().getIdentifier("grafiti2", "drawable", getPackageName());
+    	imageID[4] = getResources().getIdentifier("rasveta2", "drawable", getPackageName());
+    	imageID[5] = getResources().getIdentifier("parking", "drawable", getPackageName());
+    	imageID[6] = getResources().getIdentifier("slivnik2", "drawable", getPackageName());
+    	imageID[7] = getResources().getIdentifier("red", "drawable", getPackageName());
+    	imageID[8] = getResources().getIdentifier("orange", "drawable", getPackageName());
+    	imageID[9] = getResources().getIdentifier("green", "drawable", getPackageName());
+    	this.getAllCustomerListView.setAdapter(new GetAllCustomerListViewAdapter(jsonArray, this,tmp, imageID ));
     }
     
     // GetAllCustomerTask
@@ -164,7 +203,7 @@ public class ListViewActivity extends Activity {
 		
 		@Override
 		protected void onPostExecute(JSONArray jsonArray) {
-			
+			unavailable.setVisibility(View.GONE);
 			// Executed on MainThread
 			if (jsonArray!= null)
 			{
@@ -250,5 +289,36 @@ public class ListViewActivity extends Activity {
 		Intent showDetails = new Intent(getApplicationContext(), PostComplaintActivity.class);	
 		startActivity(showDetails);
     }
+    
+    // Check Server
+    private class CheckServer extends AsyncTask<ApiConnector, Long, Integer>
+    {
+    	
+		@Override
+		protected Integer doInBackground(ApiConnector... params) {
+			
+			// It is executed on Background thread
+			
+			int result = params[0].CheckServer();
+			return result;
+		}
+		
+		@Override
+		protected void onPreExecute() {
+			
+		}
+		
+		@Override
+		protected void onPostExecute(Integer num) {
+			
+			// Executed on MainThread		
+			if (num == 0)
+			{
+				unavailable.setVisibility(View.VISIBLE);
+			}
+		}
+    	
+    }
+  
     
 }

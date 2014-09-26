@@ -35,12 +35,12 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
-import android.opengl.Visibility;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Base64;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -77,6 +77,9 @@ public class PostComplaintActivity extends Activity {
 	private static final int REQUEST_CAMERA = 0;
 	static String takePicturePath;
 	ImageView imageView;
+	ImageView buttonCamera;
+	ImageView buttonGallery;
+	ImageView buttonSend;
 	ImageButton selectImageButton;
 	double latitude; 
 	double longitude;
@@ -95,6 +98,7 @@ public class PostComplaintActivity extends Activity {
 	int height;
 	LinearLayout.LayoutParams lp;
 	MapFragment mapf;
+	AlertDialog dialog;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -104,7 +108,9 @@ public class PostComplaintActivity extends Activity {
 		this.description = (EditText) this.findViewById(R.id.lastName);
 		selectImageButton = (ImageButton) findViewById(R.id.selectImageButton);
 		imageView = (ImageView) findViewById(R.id.imageView);
-		
+		buttonCamera = (ImageView) findViewById(R.id.buttonCamera);
+		buttonGallery = (ImageView) findViewById(R.id.buttonGallery);
+		buttonSend = (ImageView) findViewById(R.id.buttonSend);
 		// Hide imageView until one picture is selected
 		imageView.setVisibility(View.GONE);
 		
@@ -193,9 +199,11 @@ public class PostComplaintActivity extends Activity {
 					this.latitude, this.longitude)
 						.execute(new ApiConnector());
 			Toast.makeText(getApplicationContext(), "Uploading...", Toast.LENGTH_LONG).show();  
+			buttonSend.setEnabled(false);
 		} catch (Exception e )
 		{
 			Toast.makeText(getApplicationContext(), "Error1", Toast.LENGTH_LONG).show();  
+			buttonSend.setEnabled(true);
 		}
 	}
 	
@@ -389,16 +397,25 @@ public class PostComplaintActivity extends Activity {
 			{
 				new UpdateFilePathDB( userID,  imagePath)
 							.execute(new ApiConnector());
+				
+				
+				// Showing Alert Message
+      
+				
 				runOnUiThread(new Runnable() {	                	              
                 	
 	                @Override
 	                public void run() {
 	                   Toast.makeText(getApplicationContext(), "Successfully uploaded!", Toast.LENGTH_LONG).show();
+	                	goToCustomerDetailsActivity();
+	                	
+	                	
 	                }
 	            });
+	            
 			} catch (Exception e )
 			{
-					
+				e.printStackTrace();	
 			}
 		} 
 		//
@@ -805,6 +822,26 @@ public class PostComplaintActivity extends Activity {
 			gps.stopUsingGPS();
 		}
 		
+		// When user posts complaint, go to on CustomerDetailsActivity which is called from listView onChild click
+		public void goToCustomerDetailsActivity()
+		{
+			// Send Customer ID
+			
+			
+			LayoutInflater inflater = getLayoutInflater();
+			dialog = new AlertDialog.Builder(PostComplaintActivity.this) 					
+			.setView(inflater.inflate(R.layout.alert_dialog,null))
+			.setTitle("Prijava poslata")	
+			.setPositiveButton("U redu", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface arg0, int arg1) {
+					dialog.cancel();													
+				}						
+			}).show();
+			buttonCamera.setVisibility(View.GONE);
+			buttonGallery.setVisibility(View.GONE);
+			buttonSend.setVisibility(View.GONE);
+		}
 		
 }
 

@@ -34,11 +34,11 @@ public class GetAllCustomerListViewAdapter extends BaseAdapter {
 	private static final String server = "http://178.148.116.182/";
 	public String imageNameTmp;
 	String[] categoryArray;
-	int imageID;
+	int[] imageID;
 
 	
 	
-	public GetAllCustomerListViewAdapter(JSONArray jsonArray,Activity a, String[] tmp, int arg_imageID)
+	public GetAllCustomerListViewAdapter(JSONArray jsonArray,Activity a, String[] tmp, int[] arg_imageID)
 	{
 		this.activity = a;
 		this.dataArray = jsonArray;
@@ -83,6 +83,9 @@ public class GetAllCustomerListViewAdapter extends BaseAdapter {
 			cell.image = (ImageView) convertView.findViewById(R.id.customer_mobile);
 			cell.outter = (LinearLayout) convertView.findViewById(R.id.outterLayout);
 			cell.image.setTag(position);
+			cell.datum = (TextView) convertView.findViewById(R.id.datum);
+			cell.statusImage = (ImageView) convertView.findViewById(R.id.statusImage);
+			cell.statusTextChange = (TextView) convertView.findViewById(R.id.statusTextChange);
 			convertView.setTag(cell);
 		}
 		else
@@ -95,26 +98,46 @@ public class GetAllCustomerListViewAdapter extends BaseAdapter {
 		{
 			JSONObject jsonObject = this.dataArray.getJSONObject(position);
 			cell.category.setText(jsonObject.getString("first"));
-			cell.category.setText(categoryArray[Integer.parseInt(jsonObject.getString("first"))]);
-			cell.description.setText(jsonObject.getString("last"));
+			try
+			{
+				
+				if (Integer.parseInt(jsonObject.getString("first")) == 0)
+				{
+					cell.category.setText("Ostalo");
+				} else cell.category.setText(categoryArray[Integer.parseInt(jsonObject.getString("first"))]);
+			}
+			catch (Exception e )
+			{
+				cell.category.setText(categoryArray[7]);
+			}
+		//	cell.description.setText(jsonObject.getString("last"));
 			cell.status = jsonObject.getInt("status");
+			cell.str_category = jsonObject.getString("first");
 			cell.myPosition = position;
+			cell.datum.setText(jsonObject.getString("date"));
+			
 			// System.out.println(position + " " + jsonObject.getString("first") +" "+ jsonObject.getString("last") + " status:" + jsonObject.getInt("status"));
 			// Temp Image is no image
 			
-			cell.image.setImageResource(imageID);
+		//	cell.image.setImageResource(imageID);
 			
 			// Surround with different color depending on status
 			switch (cell.status)
 			{
 			// Red, not solved
-			case 0: cell.outter.setBackgroundColor(Color.parseColor("#ff0000"));
+			case 0: //cell.outter.setBackgroundColor(Color.parseColor("#ff0000"));
+					cell.statusImage.setImageResource(imageID[7]);
+					cell.statusTextChange.setText("U obradi");
 					break;
 			// Orange, needs approval
-			case 1: cell.outter.setBackgroundColor(Color.parseColor("#e19528"));
+			case 1: //cell.outter.setBackgroundColor(Color.parseColor("#e19528"));
+					cell.statusImage.setImageResource(imageID[8]);
+					cell.statusTextChange.setText("Potrebna verifikacija");
 					break;
 			// Green, solved! Yeeeey!
-			case 2: cell.outter.setBackgroundColor(Color.parseColor("#1f9b0f"));
+			case 2: //cell.outter.setBackgroundColor(Color.parseColor("#1f9b0f"));
+					cell.statusImage.setImageResource(imageID[9]);
+					cell.statusTextChange.setText("Popravljeno!");
 					break;
 			}
 			
@@ -122,15 +145,41 @@ public class GetAllCustomerListViewAdapter extends BaseAdapter {
 			
 			// url for image folder
 			
-	
+			switch (Integer.parseInt(cell.str_category))
+			{
+			case 1:
+				cell.image.setImageResource(imageID[1]);
+				break;
+			case 2:
+				cell.image.setImageResource(imageID[2]);
+				break;
+			case 3:
+				cell.image.setImageResource(imageID[3]);
+				break;
+			case 4:
+				cell.image.setImageResource(imageID[4]);
+				break;
+			case 5:
+				cell.image.setImageResource(imageID[5]);
+				break;
+			case 6:
+				cell.image.setImageResource(imageID[6]);
+				break;
+			default:
+				cell.image.setImageResource(imageID[0]);
+				break;
+			}
+			
+			
+			
+			/* Enable this for async image loading, disabled now
+
 			// name of image that we are downloading
 			String nameOfImage = jsonObject.getString("imageName");
 
 			// full url of image
 			String urlForImageInServer = baseUrlForImage + nameOfImage;
 			
-			
-
 			// new async task for downloading images in background
 			new AsyncTask<String, Void, Bitmap>()
 			{
@@ -173,10 +222,11 @@ public class GetAllCustomerListViewAdapter extends BaseAdapter {
 					
 				}
 				
+				
 			}
 			// Scenario 1
 			.execute(urlForImageInServer);
-			
+			*/
 			
 		} catch (JSONException e) 
 		{
@@ -196,13 +246,16 @@ public class GetAllCustomerListViewAdapter extends BaseAdapter {
 		private TextView category;
 		private TextView description;
 		private ImageView image;
+		private TextView datum;
+		private ImageView statusImage;
+		private TextView statusTextChange;
 		private LinearLayout outter;
 		private int status;
 		private double latitude;
 		private double longitude;
 		int myPosition;
 		AsyncTask task;
-		
+		String str_category; 
 		
 	}
 	
