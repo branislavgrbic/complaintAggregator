@@ -31,6 +31,11 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
+
+/*
+ *  This Activity is started when application starts
+ */
+
 public class ListViewActivity extends Activity {
 
 	private static final String server = "http://178.148.116.182/";
@@ -45,7 +50,6 @@ public class ListViewActivity extends Activity {
 	ImageView unavailable;
 	RelativeLayout.LayoutParams lp;
 	int[] imageID;
-	boolean startedAlready = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState); 
@@ -63,14 +67,17 @@ public class ListViewActivity extends Activity {
 		splashImage.getLayoutParams().width = width;
 		splashImage.setImageResource(R.drawable.splash);
 		imageID = new int[10];
-		// If application is started from scratch show splash screen, if its resumed or 
-		// screen is rotated, do nothing
-		if (!startedAlready)
-		{
-			System.out.println("started alreadu :" + startedAlready);
-			splashImage.setVisibility(View.VISIBLE);
-			startedAlready = true;
-			
+	
+		/* 
+		* Changed instead of handler (which is commented below) , starts splash screen
+		* Splash screen is implemented as imageButton which is hidden after 3000 ms
+		* or if user touches the screen.
+		*/
+		new SplashScreen().execute(new ApiConnector());
+		
+		splashImage.setVisibility(View.VISIBLE);
+		//	startSplashScreen();
+		/*	
 			Handler handler = new Handler();
 			handler.postDelayed(new Runnable() {
 			        @Override
@@ -103,7 +110,7 @@ public class ListViewActivity extends Activity {
 							unavailable.setVisibility(View.VISIBLE);
 						}
 						*/
-			        	if (errorLoading)
+			   /*     	if (errorLoading)
 			        	{
 			        		System.out.println("No data from database");
 							unavailable.setVisibility(View.VISIBLE);
@@ -118,19 +125,15 @@ public class ListViewActivity extends Activity {
 			        
 			        
 			    }, 3000);
-			
-			
-		}
-		else
-		{
-			splashImage.setVisibility(View.GONE);
-        	getAllCustomerListView.setVisibility(View.VISIBLE);
-        	button.setVisibility(View.VISIBLE);
-		}
+			*/	
 		try
 		{
 			//new CheckServer().execute(new ApiConnector());
+			
+			// Draw database unavailable logo, after data is fetched logo is hidden
 			unavailable.setVisibility(View.VISIBLE);
+			
+			// Get all data from Database in AsyncTask
 			new GetAllFromDbTask().execute(new ApiConnector());
 		}
 		catch (Exception e)
@@ -153,8 +156,8 @@ public class ListViewActivity extends Activity {
 					JSONObject customerCliked = jsonArray.getJSONObject(position);
 					
 					// Send Customer ID
-					Intent showDetails = new Intent(getApplicationContext(), CustomerDetailsActivity.class);
-					showDetails.putExtra("CustomerID", customerCliked.getInt("ID"));
+					Intent showDetails = new Intent(getApplicationContext(), ReportDetailsActivity.class);
+					showDetails.putExtra("ID", customerCliked.getInt("ID"));
 					
 					startActivity(showDetails);
 				}
@@ -169,6 +172,8 @@ public class ListViewActivity extends Activity {
 
     public void setListAdapter(JSONArray jsonArray,String[] tmp)
     {
+    	// Get r.Id of all images that are installed with app, and send as argument to listAdapter
+    	
     	this.jsonArray = jsonArray;
     	imageID[0] = getResources().getIdentifier("ostalo", "drawable", getPackageName());
     	imageID[1] = getResources().getIdentifier("rupa2", "drawable", getPackageName());
@@ -192,7 +197,7 @@ public class ListViewActivity extends Activity {
 			
 			// It is executed on Background thread
 			
-			return params[0].GetAllFromDB();
+			return params[0].getAllFromDB();
 			
 		}
 		
@@ -224,6 +229,7 @@ public class ListViewActivity extends Activity {
 			else 
 			{
 				// No connection to dataBase and splash screen is finished
+				
 				if (handlerDone)
 				{
 					System.out.println("No data from database");
@@ -239,7 +245,8 @@ public class ListViewActivity extends Activity {
     	
     }
     
-    // On Splash Screen click turn it off
+   
+    // When user touches the splash screen dismiss it
     
     public void dismissSplashScreen (View view)
     {
@@ -259,7 +266,7 @@ public class ListViewActivity extends Activity {
 			
 			// It is executed on Background thread
 			
-			 params[0].AddToDB("","",0,0);
+			 params[0].addToDB("","",0,0);
 			return null;
 		}
 		
@@ -299,7 +306,7 @@ public class ListViewActivity extends Activity {
 			
 			// It is executed on Background thread
 			
-			int result = params[0].CheckServer();
+			int result = params[0].checkServer();
 			return result;
 		}
 		
@@ -317,8 +324,45 @@ public class ListViewActivity extends Activity {
 				unavailable.setVisibility(View.VISIBLE);
 			}
 		}
-    	
-    }
   
-    
+    }   
+    // Splash screen class 
+    private class SplashScreen extends AsyncTask<ApiConnector, Long, Integer>
+    {
+    	
+		@Override
+		protected Integer doInBackground(ApiConnector... params) {
+			
+			// It is executed on Background thread
+			
+			int result = params[0].splashScreenSleeping();
+			return result;
+		}
+		
+		@Override
+		protected void onPreExecute() {
+			
+		}
+		
+		@Override
+		protected void onPostExecute(Integer num) {
+			
+			// Executed on MainThread		
+			// Adjust ViewContent
+			splashImage.setVisibility(View.GONE);
+        	getAllCustomerListView.setVisibility(View.VISIBLE);
+        	button.setVisibility(View.VISIBLE);
+        	System.out.println("HANDLER DONE");
+        	if (errorLoading)
+        	{
+        		System.out.println("No data from database");
+				unavailable.setVisibility(View.VISIBLE);
+				splashImage.setVisibility(View.GONE);
+	        	getAllCustomerListView.setVisibility(View.GONE);
+	        	button.setVisibility(View.VISIBLE);
+	        	errorLoading = false;
+	        	handlerDone = true;
+        	}
+		}
+    }
 }

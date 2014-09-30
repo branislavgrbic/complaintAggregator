@@ -30,8 +30,10 @@ public class ApiConnector {
 	private static final String server = "http://178.148.116.182/";
 	private static final String serverCheck = "http://178.148.116.182";
 	InputStream inputStream;
-	// get all from customers
-	public JSONArray GetAllFromDB() {
+	
+	// get all from database 
+	
+	public JSONArray getAllFromDB() {
 		// URL for getting db info
 
 		String url = server + "getAllCustomers.php";
@@ -114,11 +116,13 @@ public class ApiConnector {
 
 	}
 	
-	public JSONArray GetCustomerDetails(int CustomerID)
+	// Get data for one specific report
+	
+	public JSONArray getReportDetails(int ID)
 	{
 		// URL for getting db info
 
-				String url = server + "getCustomerDetails.php?CustomerID="+CustomerID;
+				String url = server + "getCustomerDetails.php?CustomerID="+ID;
 
 				//String url = "example.com","username","password","my_db";
 				//String url = "http://10.0.2.2:8080/getAllCustomers.php";
@@ -206,11 +210,12 @@ public class ApiConnector {
 	
 	
 	/* ************************************************************************************************
-	 * This callse insertInto.php which inserts User Name, Last Name, Age into database 
+	 * This calls insertInto.php which inserts User Name, Last Name, Age into database 
 	 *   and returns the given id for this user
 	 * Id is then used for image storing.
 	 ************************************************************************************************* */
-	public HttpResponse AddToDB(String temp_name, String temp_description, double temp_latitude, double temp_longitude) {
+	
+	public HttpResponse addToDB(String temp_name, String temp_description, double temp_latitude, double temp_longitude) {
 		// URL for getting db info
 
 		String query = null;
@@ -312,13 +317,15 @@ public class ApiConnector {
 		return (httpResponse);
 	}
 	
+	
 	/* ******************************************************************************
 	 * 
 	 * This method is used when uploading new report. First user sends all the information,
 	 * and when he gets his Unique ID then we can update the information about image path
 	 * 
 	 ********************************************************************************/
-	public void UpdateImagePath(String CustomerID, String filePath) {
+	
+	public void updateImagePath(String CustomerID, String filePath) {
 		// URL for getting db info
 
 		// String url = server + "getCustomerDetails.php?CustomerID="+CustomerID;
@@ -365,7 +372,25 @@ public class ApiConnector {
 	
 	}
 	
-	public int CheckServer()
+	// Splash screen sleep
+	
+	public int splashScreenSleeping()
+	{
+		try
+		{
+			Thread.sleep(3000);
+		}
+		catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return 0;
+		
+	}
+	
+	// not used at the moment 
+	
+	public int checkServer()
 	{
 		return 1;
 	}

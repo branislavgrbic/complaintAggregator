@@ -142,7 +142,6 @@ public class PostComplaintActivity extends Activity {
 			    public void onNothingSelected(AdapterView<?> parentView) {
 			    	categorySelected = "";
 			    }
-
 			});
 			/*
 			// Adjust GPS
@@ -237,7 +236,7 @@ public class PostComplaintActivity extends Activity {
 			
 			// It is executed on Background thread
 			
-			HttpResponse response = params[0].AddToDB(this.categorySelected, this.description,this.latitude,this.longitude);
+			HttpResponse response = params[0].addToDB(this.categorySelected, this.description,this.latitude,this.longitude);
 			try {
 				userID = convertResponseToString(response);
 				
@@ -407,11 +406,13 @@ public class PostComplaintActivity extends Activity {
 	                @Override
 	                public void run() {
 	                   Toast.makeText(getApplicationContext(), "Successfully uploaded!", Toast.LENGTH_LONG).show();
-	                	goToCustomerDetailsActivity();
+	                   // Maybe this should be outside of runOnUiThread
+	                   goToCustomerDetailsActivity();
 	                	
 	                	
 	                }
 	            });
+				
 	            
 			} catch (Exception e )
 			{

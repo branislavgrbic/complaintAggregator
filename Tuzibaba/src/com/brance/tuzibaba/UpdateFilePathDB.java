@@ -24,7 +24,7 @@ public class UpdateFilePathDB extends AsyncTask<ApiConnector, Long, JSONArray>
 		
 		
 		try {
-			params[0].UpdateImagePath(this.CustomerID, this.filePath);
+			params[0].updateImagePath(this.CustomerID, this.filePath);
 		} catch (IllegalStateException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
